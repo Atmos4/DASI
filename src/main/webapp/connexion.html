@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Connexion</title>
+	<meta charset="utf-8" />
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="css/inscription.css" />
+        <link rel="stylesheet" href="css/template.css" />
+	</head>
+    <body>
+        <header>
+            <img id="menu" src="menu.png" width = "20px" height="20px"/>
+            <span id="title">Posit'IF</span>
+        </header>
+        <div id="bloc_page">
+            <h1>Connexion</h1>
+            <div id="cadre">
+                <p>Mail : <input id="champ-login" type="email" name = "email"></p>
+                <p>Date de naissance : <input type="date" name = "birthday"></p>
+                <button id= "button" class = "button">Se Connecter</button>
+            </div>
+            <div id="message"></div>
+        </div>
+        
+        <script>
+            
+            
+            function connexionClient() {
+                
+                $('#message').html('Connexion en cours');
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'connexionClient',
+                        mail: $('#champ-login').val()
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    window.location='accueil.html';
+                }).fail(function(){
+                    console.log("erreur");
+                    $('#message').html('Echec de connexion');
+                });
+            }
+            
+            
+            $(document).ready(function () {
+                // ajout d'un "handler" sur le clic du bouton de connexion
+                $('#button').on('click', function () {
+                    // affichage pour debugage dans la console javascript du navigateur
+                    console.log('Click sur le bouton "Se Connecter"');
+                    // appel de la fonction connexion
+                    connexionClient();
+                });
+            });
+        </script>
+        
+    </body>
+</html>

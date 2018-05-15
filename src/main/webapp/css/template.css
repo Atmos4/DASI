@@ -1,0 +1,52 @@
+body, a{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 12pt;
+    align-content: center;
+    margin:0px;
+    color:black;
+    text-decoration : none;
+}
+
+
+header{
+    background-color: red;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding : 5px;
+}
+
+header #title{
+    color:white;
+    margin-left : 10px;
+}
+
+header #voyance{
+    margin-left: auto;
+}
+
+nav{
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+    background-color: grey;
+}
+nav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    display: block;
+}
+
+nav a:hover {
+    color: #f1f1f1;
+}
+
+.ast{
+    color : red;
+    margin:2px;
+}

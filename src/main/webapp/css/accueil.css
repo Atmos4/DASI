@@ -1,0 +1,17 @@
+#bloc_section{
+    margin-left : 160px;
+    display : flex;
+    justify-content: space-around;
+}
+
+section{
+    border:solid 1px black;
+    border-radius : 10px;
+    width : 29%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top : 15px;
+
+
+}

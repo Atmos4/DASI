@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Inscription</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/inscription.css">
+        <link rel="stylesheet" type="text/css" href="css/template.css" />
+	</head>
+    <body>
+        <header>
+            <img id="menu" src="menu.png" width = "20px" height="20px"/>
+            <span id="title">Posit'IF</span>
+            <button id ="voyance">Demander Voyance</button>
+        </header>
+        <form action="./ActionServlet" method ="post">
+            <div id="bloc_page">
+                <h1>Inscription</h1>
+                <div id ="cadre">
+                    <p>Nom : <span class = "ast" title = "Champ obligatoire">*</span><input type ="text" name="fnom"></p>
+                    <p>Prénom : <span class = "ast" title = "Champ obligatoire">*</span><input type ="text" name="pnom"></p>
+                    <p>Coordonnées : <span class = "ast" title = "Champ obligatoire">*</span><input type ="text" name="position"></p>
+                    <p>Numéro tél. : <input type ="tel" name="numtel"></p>
+                    <p>Mail : <span class = "ast" title = "Champ obligatoire">*</span><input type ="email" name="mail"></p>
+                    <p>Confirmation mail : <span class = "ast" title = "Champ obligatoire">*</span><input type ="email" name="confmail"></p>
+                    <p>Civilité : <span class = "ast" title = "Champ obligatoire">*</span>
+                        <select name="gender">
+                            <option value="mr">Monsieur</option>
+                            <option value="ms">Madame</option>
+                        </select>
+                    </p>
+                    <p>Date de naissance : <span class = "ast" title = "Champ obligatoire">*</span><input type ="date" name="bdate"></p>
+                    
+                    <button type="submit" class = "button">S'inscrire</button>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
