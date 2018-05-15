@@ -5,9 +5,17 @@
  */
 package fr.insalyon.ihm_positif;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,6 +49,18 @@ public class ActionServlet extends HttpServlet {
         String todo=request.getParameter("action");
         
         Services services = new Services();
+        
+        //Création d'un client pour test
+        /*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = null;
+        try {
+            d = sdf.parse("12/11/1995");
+        } catch (ParseException ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Client c = new Client("femme", "Bernardette", "Roberta", d, "1 route balabala", "gb@insa.com", "0211554789" );
+        services.inscription(c);*/
+        
         switch (todo)
         {
             case  "connexionClient" :
@@ -52,6 +72,18 @@ public class ActionServlet extends HttpServlet {
                    response.setStatus(200);
                    HttpSession session = request.getSession(true);
                    session.setAttribute("Client", client);
+                   try (PrintWriter out = response.getWriter()) {
+                       Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+                        JsonObject jsonClient = new JsonObject();
+                        jsonClient.addProperty("id", client.getIdC());
+                        jsonClient.addProperty("motDePasse", client.getMail());
+                        
+                        JsonObject container = new JsonObject();
+                        container.add("personne", jsonClient);
+                        
+                        out.println(gson.toJson(container));
+                   }
                 }
                 else
                 {
@@ -69,6 +101,17 @@ public class ActionServlet extends HttpServlet {
                    response.setStatus(200);
                    HttpSession session = request.getSession(true);
                    session.setAttribute("mailEmploye", mail);
+                   try (PrintWriter out = response.getWriter()) {
+                       Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+                        JsonObject jsonEmp = new JsonObject();
+                        jsonEmp.addProperty("mail", mail);
+                        
+                        JsonObject container = new JsonObject();
+                        container.add("personne", jsonEmp);
+                        
+                        out.println(gson.toJson(container));
+                   }
                 }
                 else
                 {
@@ -118,11 +161,17 @@ public class ActionServlet extends HttpServlet {
     
     @Override
     public void init(){
+        try {
+            super.init();
+        } catch (ServletException ex) {
+            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JpaUtil.init();
     }
     
     @Override
     public void destroy(){
+        super.destroy();
         JpaUtil.destroy();
     }
 
