@@ -11,42 +11,93 @@ body, a{
 header{
     background-color: red;
     display:flex;
-    justify-content: space-between;
     align-items: center;
     padding : 5px;
 }
 
 header #title{
+    cursor:pointer;
     color:white;
     margin-left : 10px;
 }
 
-header #voyance{
+header #btnModal{
     margin-left: auto;
 }
 
-nav{
+nav {
     height: 100%;
-    width: 160px;
+    width: 0;
     position: fixed;
     z-index: 1;
+    top: 0;
     left: 0;
+    background-color: #111;
     overflow-x: hidden;
-    padding-top: 20px;
-    background-color: grey;
+    transition: 0.5s;
+    padding-top: 60px;
 }
+
 nav a {
-    padding: 6px 8px 6px 16px;
+    padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
+    color: #818181;
     display: block;
+    transition: 0.3s;
 }
 
 nav a:hover {
     color: #f1f1f1;
 }
 
+nav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
 .ast{
     color : red;
     margin:2px;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }

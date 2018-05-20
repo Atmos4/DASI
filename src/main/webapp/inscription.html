@@ -9,36 +9,115 @@ and open the template in the editor.
         <title>Inscription</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/inscription.css">
         <link rel="stylesheet" type="text/css" href="css/template.css" />
 	</head>
     <body>
         <header>
-            <img id="menu" src="menu.png" width = "20px" height="20px"/>
-            <span id="title">Posit'IF</span>
-            <button id ="voyance">Demander Voyance</button>
+            <span id="title" >&#9776; Posit'IF</span>
         </header>
-        <form action="./ActionServlet" method ="post">
-            <div id="bloc_page">
-                <h1>Inscription</h1>
-                <div id ="cadre">
-                    <p>Nom : <span class = "ast" title = "Champ obligatoire">*</span><input type ="text" name="fnom"></p>
-                    <p>Prénom : <span class = "ast" title = "Champ obligatoire">*</span><input type ="text" name="pnom"></p>
-                    <p>Coordonnées : <span class = "ast" title = "Champ obligatoire">*</span><input type ="text" name="position"></p>
-                    <p>Numéro tél. : <input type ="tel" name="numtel"></p>
-                    <p>Mail : <span class = "ast" title = "Champ obligatoire">*</span><input type ="email" name="mail"></p>
-                    <p>Confirmation mail : <span class = "ast" title = "Champ obligatoire">*</span><input type ="email" name="confmail"></p>
-                    <p>Civilité : <span class = "ast" title = "Champ obligatoire">*</span>
-                        <select name="gender">
-                            <option value="mr">Monsieur</option>
-                            <option value="ms">Madame</option>
-                        </select>
-                    </p>
-                    <p>Date de naissance : <span class = "ast" title = "Champ obligatoire">*</span><input type ="date" name="bdate"></p>
+       <div id="bloc_page">
+            <h1>Inscription</h1>
+            <form id ="cadre" method = "" action ="">
+                <p>Nom : <span class = "ast" title = "Champ obligatoire">*</span><input id = "nom" type ="text" name="fnom"></p>
+                <p>Prénom : <span class = "ast" title = "Champ obligatoire">*</span><input id = "prenom" type ="text" name="pnom"></p>
+                <p>Coordonnées : <span class = "ast" title = "Champ obligatoire">*</span><input id = "coordonnees" type ="text" name="position"></p>
+                <p>Numéro tél. : <input id = "tel" type ="tel" name="numtel"></p>
+                <p>Mail : <span class = "ast" title = "Champ obligatoire">*</span><input id = "mail" type ="email" name="mail"></p>
+                <p>Confirmation mail : <span class = "ast" title = "Champ obligatoire">*</span><input id = "confMail" type ="email" name="confMail"></p>
+                <p>Civilité : <span class = "ast" title = "Champ obligatoire">*</span>
+                    <select id = "civilite" name="gender">
+                        <option value="mr">Monsieur</option>
+                        <option value="ms">Madame</option>
+                    </select>
+                </p>
+                <p>Date de naissance : <span class = "ast" title = "Champ obligatoire">*</span><input id = "dateNaissance" type ="date" name="bdate"></p>
+             
+                <button type="submit" id = "buttonSubmit" class = "button">S'inscrire</button>
+            </form>
+            <div id="message"></div>
+        </div>
+        
+        <script>
+            
+            
+            function inscription() {
+                
+                $('#message').html('Inscrption en cours');
+                if ($('#nom').val()!==""
+                        && $('#prenom').val()!==""
+                        && $('#coordonnees').val()!==""
+                        && $('#mail').val()!==""
+                        && $('#confMail').val()!==""
+                        && $('#civilite').val()!==""
+                        && $('#dateNaissance').val()!==""
+                        && !($('#mail').val() > $('#confMail').val()) 
+                        && !($('#mail').val() < $('#confMail').val())
+                        )
+                {
+                    $('#message').html('Valid form');
                     
-                    <button type="submit" class = "button">S'inscrire</button>
-                </div>
-            </div>
-        </form>
+                    
+                    $.ajax({
+                        url: './ActionServlet',
+                        method: 'POST',
+                        data: {
+                            action: 'inscription',
+                            nom: $('#nom').val(),
+                            prenom: $('#prenom').val(),
+                            coordonnees: $('#coordonnees').val(),
+                            tel: $('#numtel').val(),
+                            mail: $('#mail').val(),
+                            confMail: $('#confMail').val(),
+                            civilite: $('#civilite').val(),
+                            dateNaissance: $('#dateNaissance').val()
+                        },
+                        dataType: 'json'
+                    }).done(function (data) {
+                        $('#message').html('Inscrption réussie');
+                        setTimeout(function(){window.location='index.html';},2000);
+                    }).fail(function(){
+                        console.log("erreur");
+                        $('#message').html('Echec de l\'inscription');
+                    });
+                }
+                else
+                {
+                    $('#message').html('Certains champs sont vides !');
+                }
+                
+                
+               /* $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'inscription',
+                        mail: $('#champ-login').val()
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    $('#message').html('Connexion réussie');
+                    window.location='accueil.html';
+                }).fail(function(){
+                    console.log("erreur");
+                    $('#message').html('Echec de connexion');
+                });*/
+            }
+            
+            
+            $(document).ready(function () {
+                // ajout d'un "handler" sur le clic du bouton de connexion
+                $('#buttonSubmit').on('click', function () {
+                    // affichage pour debugage dans la console javascript du navigateur
+                    console.log('Click sur le bouton "Inscription"');
+                    // appel de la fonction connexion
+                    inscription();
+                });
+            });
+        </script>
+                
+        
+        
     </body>
 </html>

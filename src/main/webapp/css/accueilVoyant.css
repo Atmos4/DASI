@@ -1,0 +1,26 @@
+h1{
+    text-align: center;
+}
+
+h2{
+    margin-left : 20px;
+    font-size:18px;
+}
+
+hr{
+    margin:10px;
+}
+
+#sections{
+    display : flex;
+    justify-content: space-between;
+}
+
+
+
+section{
+    width : 45%;
+    padding : 20px;
+
+}
+

@@ -10,8 +10,7 @@
 	</head>
     <body>
         <header>
-            <img id="menu" src="menu.png" width = "20px" height="20px"/>
-            <span id="title">Posit'IF</span>
+            <span id="title" onclick="openNav()">&#9776; Posit'IF</span>
         </header>
         <div id="bloc_page">
             <h1>Connexion</h1>
@@ -40,7 +39,8 @@
                    dataType: 'json'
                 }).done(function (data) {
                     $('#message').html('Connexion réussie');
-                    window.location='accueil.html';
+                    setTimeout(function(){window.location='accueil.html';},2000);
+                    ;
                 }).fail(function(){
                     console.log("erreur");
                     $('#message').html('Echec de connexion');

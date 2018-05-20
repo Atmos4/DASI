@@ -5,6 +5,10 @@
  */
 package fr.insalyon.ihm_positif;
 
+import Serializer.PrinterHistorique;
+import action.Action;
+import action.ActionConnexionEmploye;
+import action.ActionRecupererHistoriqueClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -49,20 +53,36 @@ public class ActionServlet extends HttpServlet {
         String todo=request.getParameter("action");
         
         Services services = new Services();
-        
-        //Création d'un client pour test
-        /*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = null;
-        try {
-            d = sdf.parse("12/11/1995");
-        } catch (ParseException ex) {
-            Logger.getLogger(ActionServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Client c = new Client("femme", "Bernardette", "Roberta", d, "1 route balabala", "gb@insa.com", "0211554789" );
-        services.inscription(c);*/
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         switch (todo)
         {
+            case "inscription" : 
+            {
+                Action act = new ActionConnexionEmploye();
+                if(act.execute(request))
+                {
+                    response.setStatus(200);
+                    try (PrintWriter out = response.getWriter()) {
+                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+                        JsonObject jsonEmp = new JsonObject();
+                        jsonEmp.addProperty("status", "success");
+                        
+                        JsonObject container = new JsonObject();
+                        container.add("personne", jsonEmp);
+                        
+                        out.println(gson.toJson(container));
+                   }
+                }
+                else
+                {
+                     //403 : erreur on refuse de traiter la requete
+                     response.setStatus(403);
+                }
+                
+                break;
+            }
             case  "connexionClient" :
             {
                 String mail = request.getParameter("mail");
@@ -71,7 +91,7 @@ public class ActionServlet extends HttpServlet {
                 {
                    response.setStatus(200);
                    HttpSession session = request.getSession(true);
-                   session.setAttribute("Client", client);
+                   session.setAttribute("ClientID", client.getIdC());
                    try (PrintWriter out = response.getWriter()) {
                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
@@ -122,9 +142,34 @@ public class ActionServlet extends HttpServlet {
                 break;
             }
             
-            case "getDonneesClients" :
+            case "recupererProfilClient" :
             {
+                HttpSession session = request.getSession(false);
+                Client clt = (Client) session.getAttribute("Client");
+                String profil;
+                profil = clt.getCivilite() + " " + clt.getPrenom() + " " + clt.getNom();
+                try (PrintWriter out = response.getWriter()) {
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+                    JsonObject jsonClient = new JsonObject();
+                    jsonClient.addProperty("strProfil", profil);
+
+                    JsonObject container = new JsonObject();
+                    container.add("profil", jsonClient);
+
+                    out.println(gson.toJson(container));
+                }
                 
+                
+                break;
+            }
+            
+            case "recupererHistoriqueClient" :
+            {
+                Action act = new ActionRecupererHistoriqueClient();
+                act.execute(request);
+                PrinterHistorique prt = new PrinterHistorique();
+                prt.execute(response.getWriter(), request);
                 
                 break;
             }
@@ -141,22 +186,22 @@ public class ActionServlet extends HttpServlet {
         
         
         
-        try (PrintWriter out = response.getWriter()) {
-            
-            
-            
-            
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ActionServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ActionServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//        try (PrintWriter out = response.getWriter()) {
+//            
+//            
+//            
+//            
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet ActionServlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet ActionServlet at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
     
     @Override

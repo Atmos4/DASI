@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+		<title>Prédiction</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="css/prediction.css" />
+        <link rel="stylesheet" href="css/template.css" />
+	</head>
+    <body>
+        <header>
+            <span id="title" onclick="openNav()">&#9776; Posit'IF</span>
+        </header>
+
+        <nav id = "sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="accueilVoyant.html">Accueil</a>
+            <a href="demande.html">Demande</a>
+            <a href="prediction.html">Prédiction</a>
+        </nav>
+
+        <div id="bloc_page">
+            <h1>Prédiction</h1>
+            <hr/>
+            <div id="sections">
+                <section>
+                    <div class = "categorie">
+                        <span>AMOUR   : </span>
+                        <div class="images">
+                            <img src="edit.png"><img src="edit.png"><img src="edit.png">
+                        </div>
+                    </div>
+                    <div class = "categorie">
+                        <span>TRAVAIL : </span>
+                        <div class="images">
+                            <img src="edit.png"><img src="edit.png"><img src="edit.png">
+                        </div>
+                    </div>
+                    <div class = "categorie">
+                        <span>SANTE   : </span>
+                        <div class="images">
+                            <img src="edit.png"><img src="edit.png"><img src="edit.png">
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Prédiction actuelle</h2>
+                    <p class="big">AMOUR : (<span id="numA">3</span>/5)</p>
+                    <p id="commA">Texte d'exemple</p>
+                    <p>TRAVAIL : (<span id="numT">3</span>/5)</p>
+                    <p id="commT">Texte d'exemple</p>
+                    <p>SANTE : (<span id="numS">3</span>/5)</p>
+                    <p id="commS">Texte d'exemple</p>
+                </section>
+            </div>
+        </div>
+        <button onclick="window.location.href = 'http://stackoverflow.com'">PREDIR</button>
+
+        <script src="js/sidenav.js"></script>
+
+    </body>
+</html>
