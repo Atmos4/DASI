@@ -4,6 +4,7 @@
 		<title>Accueil voyant</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <link rel="stylesheet" href="css/accueilVoyant.css" />
         <link rel="stylesheet" href="css/template.css" />
 	</head>
@@ -27,6 +28,7 @@
             <div id="sections">
                 <section class="first">
                     <h1>Graphiques</h1>
+                    <div id="pieChart"></div>
                     
                 </section>
                 <section>
@@ -34,9 +36,69 @@
                     
                 </section>
             </div>
+            <div id="message"></div>
         </div>
 
         <script src="js/sidenav.js"></script>
+        
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script type="text/javascript">
+            
+            
+            function recupererDataPieChart() {
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererDataPieChart',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    var voyances = data.voyances;
+                    var graphData = {
+                        label : 'Nombre de Voyances par employe',
+                        data : new Array()
+                    };
+                    for (var i=0 ; i<voyances.length ; i++){
+                        var elem = {
+                            name: voyances[i].idNomPrenom,
+                            y: voyances[i].nbVoyance
+                        };
+                        graphData.data.push(elem);
+                    }
+                    buildPieChart(pieChart,graphData);
+                    
+                    
+                    $('#message').html('Chargement réussi');
+                    ;
+                }).fail(function(){
+                    $('#message').html('Erreur de chargement profil !');
+                });
+            }
+           
+            function buildPieChart(container, graphData) {    
+
+                Highcharts.chart(container, {
+
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Répartition des Voyances'
+                    },
+                    subtitle: {
+                        text: 'Pourcentage de voyances par employés'
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{name: graphData.label, data: graphData.data}]
+                });
+            }
+            
+            $(document).ready(recupererDataPieChart());
+        </script>
 
     </body>
 </html>

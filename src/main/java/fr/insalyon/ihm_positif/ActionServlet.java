@@ -9,9 +9,11 @@ import Serializer.Printer;
 import Serializer.PrinterDetailsMedium;
 import Serializer.PrinterHistorique;
 import Serializer.PrinterMedium;
+import Serializer.PrinterVoyancesPieChart;
 import action.Action;
 import action.ActionAfficherDetailsMedium;
 import action.ActionConnexionEmploye;
+import action.ActionRecupererDataPieChart;
 import action.ActionRecupererHistoriqueClient;
 import action.ActionRecupererMediums;
 import com.google.gson.Gson;
@@ -191,6 +193,15 @@ public class ActionServlet extends HttpServlet {
                 Action act = new ActionAfficherDetailsMedium();
                 act.execute(request);
                 Printer prt = new PrinterDetailsMedium();
+                prt.execute(response.getWriter(), request);
+                break;
+            }
+            
+            case "recupererDataPieChart":
+            {
+                Action act = new ActionRecupererDataPieChart();
+                act.execute(request);
+                Printer prt = new PrinterVoyancesPieChart();
                 prt.execute(response.getWriter(), request);
                 break;
             }
