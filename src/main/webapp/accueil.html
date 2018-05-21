@@ -141,6 +141,45 @@
                 recupererHistorique();
             }
             
+            function afficherDetails(mediumID){
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'afficherDetailsMedium',
+                        idmedium : mediumID
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    $('#nom_voyant').html(data.medium.nom);
+                    $('#bio').html(data.medium.bio);
+                }).fail(function(){
+                    $('#error').html('Erreur de chargement profil !');
+                });
+                
+                
+            }
+            // Get the modal
+            var modal2 = document.getElementById('myModal2');
+
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target === modal2) {
+                    modal2.style.display = "none";
+                }
+            }
+            
+            $(document).ready(function(){
+                recupererMediums();
+                $('#liste').on('click','.icon',function(e){
+                    modal2.style.display="block";
+                    afficherDetails(e.target.parentNode.id);
+                });
+                
+            });
+            
             
             $(document).ready(init());
         </script>

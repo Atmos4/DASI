@@ -20,7 +20,7 @@ public class PrinterDetailsMedium extends Printer {
 
     @Override
     public void execute(PrintWriter out, HttpServletRequest request) {
-        Medium m = (Medium)request.getAttribute("medium");
+        Medium m = (Medium)request.getAttribute("infosMedium");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject obj = new JsonObject();
         obj.addProperty("nom",m.getNom());
@@ -28,7 +28,7 @@ public class PrinterDetailsMedium extends Printer {
         obj.addProperty("bio",m.getBio());
         
         JsonObject container = new JsonObject();
-        container.add("mediumInfos",obj);
+        container.add("medium",obj);
         out.println(gson.toJson(container));
     }
     
