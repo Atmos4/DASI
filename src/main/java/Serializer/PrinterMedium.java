@@ -31,6 +31,7 @@ public class PrinterMedium extends Printer{
         for (Medium m:mediums){
             JsonObject obj = new JsonObject();
             obj.addProperty("nom",m.getNom());
+            obj.addProperty("id",m.getIdM());
             array.add(obj);
         }
 

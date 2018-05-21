@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Arnaud
  */
 public abstract class Printer {
-    public void execute(PrintWriter out, HttpServletRequest request ){
-    }
+
+    
+    public abstract void execute(PrintWriter out, HttpServletRequest request );
 }

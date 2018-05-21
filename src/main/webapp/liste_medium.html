@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-		<title>Médiums</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Médiums</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <link rel="stylesheet" href="css/liste_medium.css" />
         <link rel="stylesheet" href="css/template.css" />
@@ -20,6 +20,19 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <p>Texte d'exemple</p>
+            </div>
+        </div>
+        
+        <!--Modal-->
+        <div id="myModal2" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="nom_voyant"></h2>
+                <hr/>
+                <p id="bio"></p>
+                <button id="demande_voyance">Demander une voyance</button>
+                <div id="error"></div>
             </div>
         </div>
 
@@ -56,7 +69,7 @@
                         var txt = "<div class='cell'>";
                         txt +="<img src=\"profile-icon.png\" class = \"icon\">";
                         txt +="<span class = \"content\">"+data.mediums[i].nom+"</span>";
-                        txt +="<img src=\"edit.png\" class=\"icon\"></div>";
+                        txt +="<img src=\"edit.png\" class=\"icon\" id=\""+data.mediums[i].id+"\"></div>";
                         
                         $('#liste').append(txt);
                     }
@@ -65,7 +78,41 @@
                 });
             }
             
-            $(document).ready(recupererMediums());
+            function afficherDetails(mediumID){
+                $('#myModal2').style.display="block";
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'afficherDetailsMedium',
+                        idmedium : mediumID
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    $('nom_voyant').html(data.medium.nom);
+                    $('bio').html(data.medium.bio);
+                }).fail(function(){
+                    $('#error').html('Erreur de chargement profil !');
+                });
+                
+                
+            }
+            
+            $(document).ready(function(){
+                recupererMediums();
+                // Get the modal
+                var modal2 = document.getElementById('myModal2');
+
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target === modal2) {
+                        modal2.style.display = "none";
+                    }
+                }
+            });
+            
         </script>
 
     </body>

@@ -6,9 +6,11 @@
 package fr.insalyon.ihm_positif;
 
 import Serializer.Printer;
+import Serializer.PrinterDetailsMedium;
 import Serializer.PrinterHistorique;
 import Serializer.PrinterMedium;
 import action.Action;
+import action.ActionAfficherDetailsMedium;
 import action.ActionConnexionEmploye;
 import action.ActionRecupererHistoriqueClient;
 import action.ActionRecupererMediums;
@@ -181,6 +183,14 @@ public class ActionServlet extends HttpServlet {
                 Action act = new ActionRecupererMediums();
                 act.execute(request);
                 Printer prt = new PrinterMedium();
+                prt.execute(response.getWriter(), request);
+                break;
+            }
+            case "afficherDetailsMedium":
+            {
+                Action act = new ActionAfficherDetailsMedium();
+                act.execute(request);
+                Printer prt = new PrinterDetailsMedium();
                 prt.execute(response.getWriter(), request);
                 break;
             }

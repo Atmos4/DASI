@@ -38,8 +38,7 @@
                     },
                    dataType: 'json'
                 }).done(function (data) {
-                    $('#message').html('Connexion réussie');
-                    setTimeout(function(){window.location='accueil.html';},2000);
+                    window.location='accueil.html';
                 }).fail(function(){
                     console.log("erreur");
                     $('#message').html('Echec de connexion');
