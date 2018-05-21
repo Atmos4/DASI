@@ -5,19 +5,20 @@
  */
 package fr.insalyon.ihm_positif;
 
+import Serializer.Printer;
 import Serializer.PrinterHistorique;
+import Serializer.PrinterMedium;
 import action.Action;
 import action.ActionConnexionEmploye;
 import action.ActionRecupererHistoriqueClient;
+import action.ActionRecupererMediums;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -53,7 +54,7 @@ public class ActionServlet extends HttpServlet {
         String todo=request.getParameter("action");
         
         Services services = new Services();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         
         switch (todo)
         {
@@ -91,7 +92,7 @@ public class ActionServlet extends HttpServlet {
                 {
                    response.setStatus(200);
                    HttpSession session = request.getSession(true);
-                   session.setAttribute("ClientID", client.getIdC());
+                   session.setAttribute("Client", client);
                    try (PrintWriter out = response.getWriter()) {
                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
@@ -146,21 +147,23 @@ public class ActionServlet extends HttpServlet {
             {
                 HttpSession session = request.getSession(false);
                 Client clt = (Client) session.getAttribute("Client");
-                String profil;
-                profil = clt.getCivilite() + " " + clt.getPrenom() + " " + clt.getNom();
+                String civil, prenom,nom;
+                civil = clt.getCivilite();
+                prenom=clt.getPrenom();
+                nom=clt.getNom();
                 try (PrintWriter out = response.getWriter()) {
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
                     JsonObject jsonClient = new JsonObject();
-                    jsonClient.addProperty("strProfil", profil);
+                    jsonClient.addProperty("civil", civil);
+                    jsonClient.addProperty("nom", nom);
+                    jsonClient.addProperty("prenom", prenom);
 
                     JsonObject container = new JsonObject();
                     container.add("profil", jsonClient);
 
                     out.println(gson.toJson(container));
                 }
-                
-                
                 break;
             }
             
@@ -170,7 +173,15 @@ public class ActionServlet extends HttpServlet {
                 act.execute(request);
                 PrinterHistorique prt = new PrinterHistorique();
                 prt.execute(response.getWriter(), request);
-                
+                break;
+            }
+            
+            case "recupererMediums":
+            {
+                Action act = new ActionRecupererMediums();
+                act.execute(request);
+                Printer prt = new PrinterMedium();
+                prt.execute(response.getWriter(), request);
                 break;
             }
             

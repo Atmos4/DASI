@@ -36,15 +36,25 @@
         <div id="bloc_section">
             <section>
                 <h1>Profil Astrologique</h1>
-                <div id="profil"></div>
+                <p>Civilité : <span id="civil"></span></p>
+                <p>Prénom : <span id="prenom"></span></p>
+                <p>Nom : <span id="nom"></span></p>
             </section>
 
-            <section>
+            <section id="mediums" onLoad="recupererMediums()">
                 <h1>Liste Médiums</h1>
             </section>
             
             <section>
                 <h1>Historique</h1>
+                <table id="historique">
+                    <tr>
+                        <th>Voyant</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>Effectuée</th>
+                    </tr>
+                </table>
             </section>
         </div>
         <div id="message"></div>
@@ -65,16 +75,65 @@
                     },
                    dataType: 'json'
                 }).done(function (data) {
-                    $('#profil').html(data.profil.strProfil);
-                    $('#message').html('--------------------------------Chargement réussi');
-                    ;
+                    $('#civil').html(data.profil.civil);
+                    $('#nom').html(data.profil.nom);
+                    $('#prenom').html(data.profil.prenom);
                 }).fail(function(){
                     $('#message').html('--------------------------------Erreur de chargement profil !');
                 });
             }
             
+            function recupererHistorique(){
+                 $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererHistoriqueClient',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    var historique = data.historique;
+                    for (var i=0;i<historique.length && i<10;i++){
+                        var txt = "<tr><td>"+data.historique[i].voyant+"</td><td>"+data.historique[i].dateD+"</td><td>"+data.historique[i].dateF+"</td></tr>";
+                        
+                        $('#historique').append(txt);
+                    }
+                }).fail(function(){
+                    $('#message').html('--------------------------------Erreur de chargement profil !');
+                });
+            }
             
-            $(document).ready(recupererProfil());
+            function recupererMediums(){
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererMediums',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    var mediums = data.mediums;
+                    for (var i=0;i<mediums.length && i<10;i++){
+                        var txt = "<div class='cell'>";
+                        txt +="<img src=\"profile-icon.png\" class = \"icon\">";
+                        txt +="<span class = \"content\">"+data.mediums[i].nom+"</span>";
+                        txt +="<img src=\"edit.png\" class=\"icon\"></div>";
+                        
+                        $('#mediums').append(txt);
+                    }
+                }).fail(function(){
+                    $('#message').html('--------------------------------Erreur de chargement profil !');
+                });
+            }
+            
+            function init(){
+                recupererProfil();
+                recupererMediums();
+                recupererHistorique();
+            }
+            
+            
+            $(document).ready(init());
         </script>
         
     </body>

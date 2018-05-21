@@ -1,9 +1,10 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-		<title>Historique</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Historique</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <link rel="stylesheet" href="css/historique.css" />
         <link rel="stylesheet" href="css/template.css" />
 	</head>
@@ -32,24 +33,44 @@
         <div id="bloc_page">
             <h1>Historique</h1>
             <hr/>
-            <table id="tab_history">
+            <table id="historique">
                 <tr>
-                    <th>Voyance</th>
+                    <th>Voyant</th>
                     <th>Début</th>
                     <th>Fin</th>
                     <th>Effectuée</th>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
             </table>
+            
+        <div id="message"></div>
         </div>
 
         <script src="js/modal.js"></script>
         <script src="js/sidenav.js"></script>
+        
+        <script>
+            function recupererHistorique(){
+                 $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererHistoriqueClient',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    var historique = data.historique;
+                    for (var i=0;i<historique.length && i<10;i++){
+                        var txt = "<tr><td>"+data.historique[i].voyant+"</td><td>"+data.historique[i].dateD+"</td><td>"+data.historique[i].dateF+"</td></tr>";
+                        
+                        $('#historique').append(txt);
+                    }
+                }).fail(function(){
+                    $('#message').html('--------------------------------Erreur de chargement profil !');
+                });
+            }
+            
+            $(document).ready(recupererHistorique());
+        </script>
 
     </body>
 </html>

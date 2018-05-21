@@ -28,11 +28,10 @@ public class ActionRecupererHistoriqueClient extends Action{
     @Override
     public boolean execute(HttpServletRequest request){
         Services services = new Services();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         HttpSession session = request.getSession(false);
         Client clt = (Client) session.getAttribute("Client");
-        
+                
         List<Voyance> hist = services.consulterHistorique(clt);
         request.setAttribute("hist", hist);
         return true;

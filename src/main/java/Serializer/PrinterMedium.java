@@ -10,19 +10,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import models.Voyance;
+import models.Medium;
 
 /**
  *
- * @author Greg
+ * @author Arnaud
  */
-public class PrinterHistorique extends Printer {
+public class PrinterMedium extends Printer{
     public void execute(PrintWriter out, HttpServletRequest request ){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<Voyance> hist = (List<Voyance>) request.getAttribute("hist");
+        List<Medium> mediums = (List<Medium>) request.getAttribute("mediums");
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -30,17 +28,14 @@ public class PrinterHistorique extends Printer {
         JsonArray array = new JsonArray();
                     
                     
-        for (Voyance v:hist){
+        for (Medium m:mediums){
             JsonObject obj = new JsonObject();
-            obj.addProperty("voyant",v.getMedium().getNom());
-            obj.addProperty("dateD",sdf.format(v.getStartDate()));
-            obj.addProperty("dateF",sdf.format(v.getEndDate()));
-            obj.addProperty("done",(v.getEndDate()!=null));
+            obj.addProperty("nom",m.getNom());
             array.add(obj);
         }
 
         JsonObject container = new JsonObject();
-        container.add("historique",array);
+        container.add("mediums",array);
         out.println(gson.toJson(container));
     }
 }

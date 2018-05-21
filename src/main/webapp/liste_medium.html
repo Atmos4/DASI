@@ -4,6 +4,7 @@
 		<title>Médiums</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <link rel="stylesheet" href="css/liste_medium.css" />
         <link rel="stylesheet" href="css/template.css" />
 	</head>
@@ -32,42 +33,40 @@
             <h1>Médiums</h1>
             <hr/>
             <div id="liste">
-                <div class="cell">
-                    <img src="profile-icon.png" class = "icon">
-                    <span class = "content">Mme Irma<br/>Tarologue</span>
-                    <img src="edit.png" class="icon">
-                </div>
-                <div class="cell">
-                        <img src="profile-icon.png" class = "icon">
-                        <span class = "content">Mme Irma<br/>Tarologue</span>
-                        <img src="edit.png" class="icon">
-                </div>
-                <div class="cell">
-                        <img src="profile-icon.png" class = "icon">
-                        <span class = "content">Mme Irma<br/>Tarologue</span>
-                        <img src="edit.png" class="icon">
-                </div>
-                <div class="cell">
-                        <img src="profile-icon.png" class = "icon">
-                        <span class = "content">Mme Irma<br/>Tarologue</span>
-                        <img src="edit.png" class="icon">
-                </div>
-                <div class="cell">
-                        <img src="profile-icon.png" class = "icon">
-                        <span class = "content">Mme Irma<br/>Tarologue</span>
-                        <img src="edit.png" class="icon">
-                </div>
-                <div class="cell">
-                        <img src="profile-icon.png" class = "icon">
-                        <span class = "content">Mme Irma<br/>Tarologue</span>
-                        <img src="edit.png" class="icon">
-                </div>
+                
             </div>
         </div>
 
         
         <script src="js/modal.js"></script>
         <script src="js/sidenav.js"></script>
+        
+        <script>
+            function recupererMediums(){
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererMediums',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    var mediums = data.mediums;
+                    for (var i=0;i<mediums.length && i<10;i++){
+                        var txt = "<div class='cell'>";
+                        txt +="<img src=\"profile-icon.png\" class = \"icon\">";
+                        txt +="<span class = \"content\">"+data.mediums[i].nom+"</span>";
+                        txt +="<img src=\"edit.png\" class=\"icon\"></div>";
+                        
+                        $('#liste').append(txt);
+                    }
+                }).fail(function(){
+                    $('#message').html('--------------------------------Erreur de chargement profil !');
+                });
+            }
+            
+            $(document).ready(recupererMediums());
+        </script>
 
     </body>
 </html>
