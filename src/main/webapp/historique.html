@@ -19,12 +19,29 @@
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Demande  de Voyance</h2>
-                <hr/>
-                <div id="liste_demande">
-                </div>
-                <button>Démarrer la voyance</button>
+                <div id="script_replace"></div>
             </div>
+        </div>
+        
+        <div id="modal_voyance" class="hidden">
+            <h2>Demande  de Voyance</h2>
+            <hr/>
+            <span id="idMedium" class ="hidden">0</span>
+            <div id="liste_demande">
+            </div>
+            <button id= "demarrer_voyance" disabled>Démarrer la voyance</button>
+        </div>
+        
+        <div id="modal_annule" class="hidden">
+            <h2>Voyance annulée</h2>
+            <hr/>
+            <p>Veuillez nous excuser, le voyant que vous avez demandé n'est pas disponible pour le moment<br/>Veuillez réessayer ultérieurement</p>
+        </div>
+        
+        <div id="modal_attente" class="hidden">
+            <h2>Voyance en attente</h2>
+            <hr/>
+            <p>Votre demande de voyance va être traitée rapidement, restez sur la page</p>
         </div>
         
         
@@ -100,9 +117,53 @@
                 });
             }
             
+            function selectMedium(mediumID){
+                if ($('#idMedium').html()!==0)
+                    $('#'+$('#idMedium').html()).css("background-color","white");
+                $('#demarrer_voyance').prop("disabled",false);
+                $('#idMedium').html(mediumID);
+                $('#'+mediumID).css("background-color","red");
+            }
+            
+            function demarrerVoyance(){
+                 $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'demarrerVoyance',
+                        idmedium : $('#idMedium').html()
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    if (data.isOk){
+                        $('#script_replace').html($('#modal_attente').html());
+                        $('#btnModal').prop("disabled",true);
+                        $('#demande_voyance').prop("disabled",true);
+                    }
+                    else{
+                        $('#script_replace').html($('#modal_annule').html());
+                    }
+                    $('#historique').empty();
+                    recupererHistorique();
+                    
+                }).fail(function(){
+                        alert("erreur");
+                     $('#script_replace').html($('#modal_annule').html());
+                });
+            }
+            
             $(document).ready(function(){
                 recupererHistorique();
                 recupererMediums();
+                $('#btnModal').on('click',function(){
+                    $('#script_replace').html($('#modal_voyance').html());
+                    $('#liste_demande').on('click','.cell',function(e){
+                        selectMedium(e.target.id);
+                    });
+                    $('#script_replace').on('click','#demarrer_voyance',function(){
+                        demarrerVoyance();
+                    });
+                });
             });
         </script>
 

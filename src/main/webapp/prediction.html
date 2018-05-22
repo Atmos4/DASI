@@ -120,11 +120,9 @@
                     },
                    dataType: 'json'
                 }).done(function (data) {
-                    if (data.length>2){
-                        $('#commA').html(data.amour);
-                        $('#commT').html(data.travail);
-                        $('#commS').html(data.sante);
-                    }
+                    $('#commA').html(data.amour);
+                    $('#commT').html(data.travail);
+                    $('#commS').html(data.sante);
                 }).fail(function(){
                     $('#commA').html("erreur");
                 });
@@ -134,7 +132,9 @@
                 amour(0);
                 travail(0);
                 sante(0);
-                $('#predir').on('click',prediction());
+                $('#predir').on('click',function(){
+                    prediction();
+                });
             });
             
         </script>

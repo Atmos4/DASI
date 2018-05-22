@@ -27,8 +27,8 @@ public class PrinterPrediction extends Printer{
         JsonObject obj = new JsonObject();
         if (prediction.size()>2){
             obj.addProperty("amour", prediction.get(0));
-            obj.addProperty("travail", prediction.get(1));
-            obj.addProperty("sante", prediction.get(2));
+            obj.addProperty("travail", prediction.get(2));
+            obj.addProperty("sante", prediction.get(1));
         }
                     
         out.println(gson.toJson(obj));

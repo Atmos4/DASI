@@ -16,7 +16,7 @@ import services.Services;
  *
  * @author Arnaud
  */
-public class ActionDemarrerVoyance extends Action{
+public class ActionDemanderVoyance extends Action{
 
     @Override
     public boolean execute(HttpServletRequest request) {

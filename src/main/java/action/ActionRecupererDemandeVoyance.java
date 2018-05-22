@@ -23,8 +23,8 @@ public class ActionRecupererDemandeVoyance extends Action {
         
         HttpSession session = request.getSession(false);
         Employe employe = (Employe)session.getAttribute("employe");
-        Voyance v = services.consulterDemandeVoyance(employe);
-        request.setAttribute("voyance", v);
+        //Voyance v = services.consulterDemandeVoyance(employe);
+        //request.setAttribute("voyance", v);
         return true;
     }
     

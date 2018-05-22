@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Arnaud
  */
-public class PrinterDemarrerVoyance extends Printer{
+public class PrinterDemanderVoyance extends Printer{
 
     @Override
     public void execute(PrintWriter out, HttpServletRequest request) {

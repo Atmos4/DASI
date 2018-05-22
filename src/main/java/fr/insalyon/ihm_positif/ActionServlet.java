@@ -6,7 +6,7 @@
 package fr.insalyon.ihm_positif;
 
 import Serializer.Printer;
-import Serializer.PrinterDemarrerVoyance;
+import Serializer.PrinterDemanderVoyance;
 import Serializer.PrinterDetailsMedium;
 import Serializer.PrinterHistorique;
 import Serializer.PrinterMedium;
@@ -20,7 +20,7 @@ import action.Action;
 import action.ActionAfficherDetailsMedium;
 import action.ActionConnexionClient;
 import action.ActionConnexionEmploye;
-import action.ActionDemarrerVoyance;
+import action.ActionDemanderVoyance;
 import action.ActionInscription;
 import action.ActionRecupererDataBarChartEmploye;
 import action.ActionRecupererDataBarChartMedium;
@@ -168,9 +168,9 @@ public class ActionServlet extends HttpServlet {
             }
             case "demarrerVoyance":
             {
-                Action act = new ActionDemarrerVoyance();
+                Action act = new ActionDemanderVoyance();
                 act.execute(request);
-                Printer prt = new PrinterDemarrerVoyance();
+                Printer prt = new PrinterDemanderVoyance();
                 prt.execute(response.getWriter(), request);
                 break;
             }
