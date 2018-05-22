@@ -13,25 +13,25 @@ import java.io.PrintWriter;
 import java.util.List;
 import javafx.util.Pair;
 import javax.servlet.http.HttpServletRequest;
-import models.Employe;
+import models.Medium;
 
 /**
  *
  * @author Arnaud
  */
-public class PrinterVoyancesPieChart extends Printer{
+public class PrinterVoyancesBarChartMedium extends Printer{
     
     @Override
     public void execute(PrintWriter out, HttpServletRequest request ){
-        List<Pair<Employe, Integer>> listVoyances = (List<Pair<Employe, Integer>>) request.getAttribute("voyances");
+        List<Pair<Medium, Integer>> listVoyances = (List<Pair<Medium, Integer>>) request.getAttribute("voyances");
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();  
         JsonArray array = new JsonArray();
                     
                     
-        for (Pair<Employe, Integer> p:listVoyances){
+        for (Pair<Medium, Integer> p:listVoyances){
             JsonObject obj = new JsonObject();
-            obj.addProperty("idNomPrenom",p.getKey().getIdE() + p.getKey().getNom() + p.getKey().getPrenom());
+            obj.addProperty("idNom",p.getKey().getIdM() + p.getKey().getNom());
             obj.addProperty("nbVoyance", p.getValue());
             array.add(obj);
         }

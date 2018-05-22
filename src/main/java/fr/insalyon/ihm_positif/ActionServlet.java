@@ -10,10 +10,13 @@ import Serializer.PrinterDetailsMedium;
 import Serializer.PrinterHistorique;
 import Serializer.PrinterMedium;
 import Serializer.PrinterRecupererDemandeVoyance;
+import Serializer.PrinterVoyancesBarChartMedium;
 import Serializer.PrinterVoyancesPieChart;
 import action.Action;
 import action.ActionAfficherDetailsMedium;
 import action.ActionConnexionEmploye;
+import action.ActionRecupererDataBarChartEmploye;
+import action.ActionRecupererDataBarChartMedium;
 import action.ActionRecupererDataPieChart;
 import action.ActionRecupererDemandeVoyance;
 import action.ActionRecupererHistoriqueClient;
@@ -124,7 +127,7 @@ public class ActionServlet extends HttpServlet {
             case "connexionEmploye" :
             {
                 String mail = request.getParameter("mail");
-                Employe employe =services.connexionEmploye(mail);
+                Employe employe = services.connexionEmploye(mail);
                 if(employe!=null)
                 {
                    response.setStatus(200);
@@ -204,6 +207,23 @@ public class ActionServlet extends HttpServlet {
             case "recupererDataPieChart":
             {
                 Action act = new ActionRecupererDataPieChart();
+                act.execute(request);
+                Printer prt = new PrinterVoyancesPieChart();
+                prt.execute(response.getWriter(), request);
+                break;
+            }
+            
+            case "recupererDataBarChartMedium":
+            {
+                Action act = new ActionRecupererDataBarChartMedium();
+                act.execute(request);
+                Printer prt = new PrinterVoyancesBarChartMedium();
+                prt.execute(response.getWriter(), request);
+                break;
+            }
+            case "recupererDataBarChartEmploye":
+            {
+                Action act = new ActionRecupererDataBarChartEmploye();
                 act.execute(request);
                 Printer prt = new PrinterVoyancesPieChart();
                 prt.execute(response.getWriter(), request);

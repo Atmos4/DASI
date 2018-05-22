@@ -33,6 +33,11 @@
                 </section>
                 <section>
                     <h1>Graphiques</h1>
+                    <div id="barChart1"></div>
+                </section>
+                <section class="first">
+                    <h1>Graphiques</h1>
+                    <div id="barChart2"></div>
                     
                 </section>
             </div>
@@ -57,7 +62,7 @@
                 }).done(function (data) {
                     var voyances = data.voyances;
                     var graphData = {
-                        label : 'Nombre de Voyances par employe',
+                        label : 'Pourcentage des voyances pour l employe',
                         data : new Array()
                     };
                     for (var i=0 ; i<voyances.length ; i++){
@@ -68,6 +73,66 @@
                         graphData.data.push(elem);
                     }
                     buildPieChart(pieChart,graphData);
+                    
+                    
+                    $('#message').html('Chargement réussi');
+                    ;
+                }).fail(function(){
+                    $('#message').html('Erreur de chargement profil !');
+                });
+            }
+            
+            
+            function recupererDataBarChartMedium() {
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererDataBarChartMedium',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    var voyances = data.voyances;
+                    var graphData = {
+                        labels : new Array(),
+                        data : new Array()
+                    };
+                    for (var i=0 ; i<voyances.length ; i++){
+                        graphData.labels.push(voyances[i].idNom);
+                        graphData.data.push(voyances[i].nbVoyance);
+                    }
+                    buildBarChart1(barChart1,graphData);
+                    
+                    
+                    $('#message').html('Chargement réussi');
+                    ;
+                }).fail(function(){
+                    $('#message').html('Erreur de chargement profil !');
+                });
+            }
+            
+            
+            function recupererDataBarChartEmploye() {
+                
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererDataBarChartEmploye',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    var voyances = data.voyances;
+                    var graphData = {
+                        labels : new Array(),
+                        data : new Array()
+                    };
+                    for (var i=0 ; i<voyances.length ; i++){
+                        graphData.labels.push(voyances[i].idNomPrenom);
+                        graphData.data.push(voyances[i].nbVoyance);
+                    }
+                    buildBarChart2(barChart2,graphData);
                     
                     
                     $('#message').html('Chargement réussi');
@@ -97,7 +162,69 @@
                 });
             }
             
-            $(document).ready(recupererDataPieChart());
+            
+            
+            function buildBarChart1(container, graphData) {
+
+                Highcharts.chart(container, {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Voyance par Medium'
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: graphData.labels
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Nombre de voyance(s)'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{name: 'Nombre de voyance(s)', data: graphData.data}]
+                });
+                }
+                
+                function buildBarChart2(container, graphData) {
+
+                Highcharts.chart(container, {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Voyance par Employe'
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: graphData.labels
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Nombre de voyance(s)'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{name: 'Nombre de voyance(s)', data: graphData.data}]
+                });
+            }
+            
+            $(document).ready(recupererDataPieChart(), recupererDataBarChartMedium(), recupererDataBarChartEmploye());
         </script>
 
     </body>
