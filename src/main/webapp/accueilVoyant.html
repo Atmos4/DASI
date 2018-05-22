@@ -27,16 +27,13 @@
             <hr/>
             <div id="sections">
                 <section class="first">
-                    <h1>Graphiques</h1>
                     <div id="pieChart"></div>
                     
                 </section>
                 <section>
-                    <h1>Graphiques</h1>
                     <div id="barChart1"></div>
                 </section>
                 <section class="first">
-                    <h1>Graphiques</h1>
                     <div id="barChart2"></div>
                     
                 </section>
@@ -73,9 +70,6 @@
                         graphData.data.push(elem);
                     }
                     buildPieChart(pieChart,graphData);
-                    
-                    
-                    $('#message').html('Chargement réussi');
                     ;
                 }).fail(function(){
                     $('#message').html('Erreur de chargement profil !');
@@ -103,9 +97,6 @@
                         graphData.data.push(voyances[i].nbVoyance);
                     }
                     buildBarChart1(barChart1,graphData);
-                    
-                    
-                    $('#message').html('Chargement réussi');
                     ;
                 }).fail(function(){
                     $('#message').html('Erreur de chargement profil !');
@@ -133,9 +124,6 @@
                         graphData.data.push(voyances[i].nbVoyance);
                     }
                     buildBarChart2(barChart2,graphData);
-                    
-                    
-                    $('#message').html('Chargement réussi');
                     ;
                 }).fail(function(){
                     $('#message').html('Erreur de chargement profil !');
