@@ -191,7 +191,7 @@
             function selectMedium(mediumID){
                 if ($('#idMedium').html()!==0)
                     $('#'+$('#idMedium').html()).css("background-color","white");
-                $('.demarrer_voyance').prop("disabled",false);
+                $('#demarrer_voyance').prop("disabled",false);
                 $('#idMedium').html(mediumID);
                 $('#'+mediumID).css("background-color","red");
             }

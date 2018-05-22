@@ -4,6 +4,7 @@
 		<title>Prédiction</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <link rel="stylesheet" href="css/prediction.css" />
         <link rel="stylesheet" href="css/template.css" />
 	</head>
@@ -26,26 +27,30 @@
                 <section>
                     <div class = "categorie">
                         <span>AMOUR   : </span>
-                        <div class="images">
-                            <img src="minus-icon.png"><img src="plus-icon.png">
+                        <div class="images" id="amourCtn">
+                            <img src="heart-icon.png" id="amour">
+                            
                         </div>
+                        <img src="minus-icon.png" class = "button" onclick="amour(-1)"><img src="plus-icon.png" class = "button" onclick="amour(1)">
                     </div>
                     <div class = "categorie">
                         <span>TRAVAIL : </span>
-                        <div class="images">
-                             <img src="minus-icon.png"><img src="plus-icon.png">
+                        <div class="images" id="travailCtn">
+                            <img src="work-icon.png" id="travail">
                         </div>
+                        <img src="minus-icon.png" class = "button" onclick="travail(-1)"><img src="plus-icon.png" class = "button" onclick="travail(1)">
                     </div>
                     <div class = "categorie">
                         <span>SANTE   : </span>
-                        <div class="images">
-                            <img src="minus-icon.png"><img src="plus-icon.png">
+                        <div class="images" id="santeCtn">
+                            <img src="health-icon.png" id="sante">
                         </div>
+                        <img src="minus-icon.png" class = "button" onclick="sante(-1)"><img src="plus-icon.png" class = "button" onclick="sante(1)">
                     </div>
                 </section>
                 <section>
                     <h2>Prédiction actuelle</h2>
-                    <p class="big">AMOUR : (<span id="numA">3</span>/5)</p>
+                    <p>AMOUR : (<span id="numA">3</span>/5)</p>
                     <p id="commA">Texte d'exemple</p>
                     <p>TRAVAIL : (<span id="numT">3</span>/5)</p>
                     <p id="commT">Texte d'exemple</p>
@@ -57,6 +62,59 @@
         <button onclick="window.location.href = 'http://stackoverflow.com'">PREDIR</button>
 
         <script src="js/sidenav.js"></script>
+        <script>
+            function amour(newnum){
+                var num = parseInt(newnum);
+                var prevnum = parseInt($('#numA').html());
+                if (prevnum+num <=5 && prevnum+num>0){
+                    $('#numA').html(prevnum+num);
+                    var icon = $('#amour').clone();
+                    $('#amourCtn').empty();
+                    var i=parseInt(0);
+                    while (i<(prevnum+num)){
+                        icon.clone().appendTo("#amourCtn");
+                        i++;
+                    }
+                }
+            }
+
+            function travail(newnum){
+                var num = parseInt(newnum);
+                var prevnum = parseInt($('#numT').html());
+                if (prevnum+num <=5 && prevnum+num>0){
+                    $('#numT').html(prevnum+num);
+                    var icon = $('#travail').clone();
+                    $('#travailCtn').empty();
+                    var i=parseInt(0);
+                    while (i<(prevnum+num)){
+                        icon.clone().appendTo("#travailCtn");
+                        i++;
+                    }
+                }
+            }
+
+            function sante(newnum){
+                var num = parseInt(newnum);
+                var prevnum = parseInt($('#numS').html());
+                if (prevnum+num <=5 && prevnum+num>0){
+                    $('#numS').html(prevnum+num);
+                    var icon = $('#sante').clone();
+                    $('#santeCtn').empty();
+                    var i=parseInt(0);
+                    while (i<(prevnum+num)){
+                        icon.clone().appendTo("#santeCtn");
+                        i++;
+                    }
+                }
+            }
+            
+            $(document).ready(function(){
+                amour(0);
+                travail(0);
+                sante(0);
+            })
+            
+        </script>
 
     </body>
 </html>

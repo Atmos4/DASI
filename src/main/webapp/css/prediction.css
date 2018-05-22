@@ -50,3 +50,15 @@ button {
     border-radius: 3px;
     cursor : pointer;
 }
+
+.categorie{
+    display : flex;
+}
+
+.images{
+    flex : 1;
+}
+
+.images img{
+    margin : 5px;
+}
