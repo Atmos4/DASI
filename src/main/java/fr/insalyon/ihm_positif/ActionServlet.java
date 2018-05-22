@@ -10,6 +10,7 @@ import Serializer.PrinterDemarrerVoyance;
 import Serializer.PrinterDetailsMedium;
 import Serializer.PrinterHistorique;
 import Serializer.PrinterMedium;
+import Serializer.PrinterPrediction;
 import Serializer.PrinterProfilClient;
 import Serializer.PrinterRecupererDemandeVoyance;
 import Serializer.PrinterStatusRequest;
@@ -27,6 +28,7 @@ import action.ActionRecupererDataPieChart;
 import action.ActionRecupererDemandeVoyance;
 import action.ActionRecupererHistoriqueClient;
 import action.ActionRecupererMediums;
+import action.ActionRecupererPrediction;
 import action.ActionRecupererProfilClient;
 import dao.JpaUtil;
 import java.io.IOException;
@@ -162,6 +164,7 @@ public class ActionServlet extends HttpServlet {
                 act.execute(request);
                 Printer prt = new PrinterRecupererDemandeVoyance();
                 prt.execute(response.getWriter(), request);
+                break;
             }
             case "demarrerVoyance":
             {
@@ -169,6 +172,16 @@ public class ActionServlet extends HttpServlet {
                 act.execute(request);
                 Printer prt = new PrinterDemarrerVoyance();
                 prt.execute(response.getWriter(), request);
+                break;
+            }
+            
+            case "recupererPrediction":
+            {
+                Action act = new ActionRecupererPrediction();
+                act.execute(request);
+                Printer prt = new PrinterPrediction();
+                prt.execute(response.getWriter(), request);
+                break;
             }
             default :
             {

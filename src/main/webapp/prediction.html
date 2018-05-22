@@ -51,15 +51,15 @@
                 <section>
                     <h2>Prédiction actuelle</h2>
                     <p>AMOUR : (<span id="numA">3</span>/5)</p>
-                    <p id="commA">Texte d'exemple</p>
+                    <p id="commA">Pas de prédiction</p>
                     <p>TRAVAIL : (<span id="numT">3</span>/5)</p>
-                    <p id="commT">Texte d'exemple</p>
+                    <p id="commT">Pas de prédiction</p>
                     <p>SANTE : (<span id="numS">3</span>/5)</p>
-                    <p id="commS">Texte d'exemple</p>
+                    <p id="commS">Pas de prédiction</p>
                 </section>
             </div>
         </div>
-        <button onclick="window.location.href = 'http://stackoverflow.com'">PREDIR</button>
+        <button id="predir">PREDIR</button>
 
         <script src="js/sidenav.js"></script>
         <script>
@@ -108,11 +108,34 @@
                 }
             }
             
+            function prediction(){
+                 $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererPrediction',
+                        amour : $('#numA').html(),
+                        travail : $('#numT').html(),
+                        sante : $('#numS').html()
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    if (data.length>2){
+                        $('#commA').html(data.amour);
+                        $('#commT').html(data.travail);
+                        $('#commS').html(data.sante);
+                    }
+                }).fail(function(){
+                    $('#commA').html("erreur");
+                });
+            }
+            
             $(document).ready(function(){
                 amour(0);
                 travail(0);
                 sante(0);
-            })
+                $('#predir').on('click',prediction());
+            });
             
         </script>
 
