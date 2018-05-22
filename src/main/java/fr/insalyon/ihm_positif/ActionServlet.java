@@ -9,11 +9,13 @@ import Serializer.Printer;
 import Serializer.PrinterDetailsMedium;
 import Serializer.PrinterHistorique;
 import Serializer.PrinterMedium;
+import Serializer.PrinterRecupererDemandeVoyance;
 import Serializer.PrinterVoyancesPieChart;
 import action.Action;
 import action.ActionAfficherDetailsMedium;
 import action.ActionConnexionEmploye;
 import action.ActionRecupererDataPieChart;
+import action.ActionRecupererDemandeVoyance;
 import action.ActionRecupererHistoriqueClient;
 import action.ActionRecupererMediums;
 import com.google.gson.Gson;
@@ -32,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Client;
+import models.Employe;
 
 import services.Services;
 
@@ -121,11 +124,12 @@ public class ActionServlet extends HttpServlet {
             case "connexionEmploye" :
             {
                 String mail = request.getParameter("mail");
-                if(services.connexionEmploye(mail))
+                Employe employe =services.connexionEmploye(mail);
+                if(employe!=null)
                 {
                    response.setStatus(200);
                    HttpSession session = request.getSession(true);
-                   session.setAttribute("mailEmploye", mail);
+                   session.setAttribute("employe", employe);
                    try (PrintWriter out = response.getWriter()) {
                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
@@ -204,6 +208,14 @@ public class ActionServlet extends HttpServlet {
                 Printer prt = new PrinterVoyancesPieChart();
                 prt.execute(response.getWriter(), request);
                 break;
+            }
+            
+            case "recupererDemandeVoyanceEmploye":
+            {
+                Action act = new ActionRecupererDemandeVoyance();
+                act.execute(request);
+                Printer prt = new PrinterRecupererDemandeVoyance();
+                prt.execute(response.getWriter(), request);
             }
             
             default :
