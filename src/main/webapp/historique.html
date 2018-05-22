@@ -19,9 +19,15 @@
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <p>Texte d'exemple</p>
+                <h2>Demande  de Voyance</h2>
+                <hr/>
+                <div id="liste_demande">
+                </div>
+                <button>Démarrer la voyance</button>
             </div>
         </div>
+        
+        
 
         <nav id = "sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -70,7 +76,34 @@
                 });
             }
             
-            $(document).ready(recupererHistorique());
+            function recupererMediums(){
+                $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'recupererMediums',
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                   var mediums = data.mediums;
+                    for (var i=0;i<mediums.length && i<10;i++){
+                        var txt = "<div class='cell' id=\""+data.mediums[i].id+"\">";
+                        txt +="<img src=\"profile-icon.png\" class = \"icon\">";
+                        txt +="<span class = \"content\">"+data.mediums[i].nom+"</span>";
+                        txt +="<img src=\"edit.png\" class=\"icon showdetails\"></div>";
+                        
+                       
+                        $('#liste_demande').append(txt);
+                    }
+                }).fail(function(){
+                    $('#message').html('--------------------------------Erreur de chargement profil !');
+                });
+            }
+            
+            $(document).ready(function(){
+                recupererHistorique();
+                recupererMediums();
+            });
         </script>
 
     </body>

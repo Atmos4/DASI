@@ -31,6 +31,16 @@
             <button id="demande_voyance">Demander une voyance</button>
             <div id="error"></div>
         </div>
+        
+        
+        
+        <div id="modal_voyance" class="hidden">
+            <h2>Demande  de Voyance</h2>
+            <hr/>
+            <div id="liste_demande">
+            </div>
+            <button>Démarrer la voyance</button>
+        </div>
 
         <nav id = "sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -70,6 +80,8 @@
                        
                         
                         $('#liste').append(txt);
+                        
+                        $('#liste_demande').append(txt);
                     }
                 }).fail(function(){
                     $('#message').html('--------------------------------Erreur de chargement profil !');
@@ -103,6 +115,10 @@
                 $('#liste').on('click','.showdetails',function(e){
                     modal.style.display="block";
                     afficherDetails(e.target.parentNode.id);
+                });
+                
+                $('#btnModal').on('click',function(){
+                    $('#script_replace').html($('#modal_voyance').html());
                 });
                 
             });

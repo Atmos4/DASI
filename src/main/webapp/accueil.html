@@ -32,17 +32,29 @@
             <h2 id="nom_voyant"></h2>
             <hr/>
             <p id="bio"></p>
-            <button id="demande_voyance">Demander une voyance</button>
-            <div id="error"></div>
+            <button class="demande_voyance">Demander une voyance</button>
         </div>
         
         
         <div id="modal_voyance" class="hidden">
             <h2>Demande  de Voyance</h2>
             <hr/>
+            <span id="idMedium" class ="hidden">0</span>
             <div id="liste_demande">
             </div>
-            <button>Démarrer la voyance</button>
+            <button class = "demarrer_voyance" disabled>Démarrer la voyance</button>
+        </div>
+        
+        <div id="modal_annule" class="hidden">
+            <h2>Voyance annulée</h2>
+            <hr/>
+            <p>Veuillez nous excuser, le voyant que vous avez demandé n'est pas disponible pour le moment<br/>Veuillez réessayer ultérieurement</p>
+        </div>
+        
+        <div id="modal_attente" class="hidden">
+            <h2>Voyance en attente</h2>
+            <hr/>
+            <p>Votre demande de voyance va être traitée rapidement, restez sur la page</p>
         </div>
 
         <nav id = "sidenav">
@@ -132,7 +144,7 @@
                 }).done(function (data) {
                    var mediums = data.mediums;
                     for (var i=0;i<mediums.length && i<10;i++){
-                        var txt = "<div class='cell' id=\""+data.mediums[i].id+"\">";
+                        var txt = "<div class=\"cell\" id=\""+data.mediums[i].id+"\">";
                         txt +="<img src=\"profile-icon.png\" class = \"icon\">";
                         txt +="<span class = \"content\">"+data.mediums[i].nom+"</span>";
                         txt +="<img src=\"edit.png\" class=\"icon showdetails\"></div>";
@@ -154,7 +166,6 @@
             }
             
             function afficherDetails(mediumID){
-                
                 $.ajax({
                     url: './ActionServlet',
                     method: 'POST',
@@ -169,22 +180,67 @@
                     $('#bio').html(data.medium.bio);
                     $('#script_replace').html($('#details_voyant').html());
                 }).fail(function(){
-                    $('#error').html('Erreur de chargement profil !');
                 });
                 
                 
+            }
+            
+            function selectMedium(mediumID){
+                if ($('#idMedium').html()!==0)
+                    $('#'+$('#idMedium').html()).css("background-color","white");
+                $('.demarrer_voyance').prop("disabled",false);
+                $('#idMedium').html(mediumID);
+                $('#'+mediumID).css("background-color","red");
+            }
+            
+            function demarrerVoyance(){
+                alert("fonction");
+                 $.ajax({
+                    url: './ActionServlet',
+                    method: 'POST',
+                    data: {
+                        action: 'demarrerVoyance',
+                        idmedium : $('#idMedium').html()
+                    },
+                   dataType: 'json'
+                }).done(function (data) {
+                    if (data.isOk){
+                        alert("ok");
+                        $('#script_replace').html($('#modal_attente').html());
+                    }
+                    else{
+                        $('#script_replace').html($('#modal_annule').html());
+                    }
+                    
+                }).fail(function(){
+                        alert("erreur");
+                     $('#script_replace').html($('#modal_annule').html());
+                });
             }
             
             $(document).ready(function(){
                 init();
                 $('#mediums').on('click','.showdetails',function(e){
                     modal.style.display="block";
+                    $('#idMedium').html(e.target.parentNode.id);
                     afficherDetails(e.target.parentNode.id);
+                    $('.demande_voyance').on('click',function(){
+                        demarrerVoyance();
+                    });
                 });
                 
                 $('#btnModal').on('click',function(){
                     $('#script_replace').html($('#modal_voyance').html());
+                    $('#liste_demande').on('click','.cell',function(e){
+                        selectMedium(e.target.id);
+                    });
+                    $('.demarrer_voyance').on('click',function(){
+                        demarrerVoyance();
+                    });
                 });
+                
+                
+                
             });
         </script>
         

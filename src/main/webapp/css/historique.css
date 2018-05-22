@@ -21,3 +21,20 @@ table{
 td, th{
     border: solid 1px black;
 }
+
+#liste_demande{
+    display : flex;
+    flex-wrap: wrap;
+}
+
+.cell{
+    width : 45%;
+    height: 40px;
+    margin-top:10px;
+    margin-left : 2%;
+    margin-right : 2%;
+    border : solid 1px black;
+    border-radius : 5px;
+    display: flex;
+    justify-content: space-between;
+}

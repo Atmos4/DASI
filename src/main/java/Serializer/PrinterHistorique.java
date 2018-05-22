@@ -35,8 +35,8 @@ public class PrinterHistorique extends Printer {
         for (Voyance v:hist){
             JsonObject obj = new JsonObject();
             obj.addProperty("voyant",v.getMedium().getNom());
-            obj.addProperty("dateD",sdf.format(v.getStartDate()));
-            obj.addProperty("dateF",sdf.format(v.getEndDate()));
+            obj.addProperty("dateD",(v.getStartDate()!=null?sdf.format(v.getStartDate()):"Pas de date"));
+            obj.addProperty("dateF",v.getEndDate()!=null?sdf.format(v.getEndDate()):"Pas de date");
             obj.addProperty("done",(v.getEndDate()!=null));
             array.add(obj);
         }
