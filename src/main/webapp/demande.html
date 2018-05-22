@@ -55,7 +55,7 @@
                     <p><span>Couleur porte-bonheur : </span><span id="infCouleur"></span></p>
                 </section>
                 <section>
-                    <h2>Médium demandé : Mme Irma</h2>
+                    <h2>Médium demandé : <span id=medium"></span></h2>
                     <h1>Historique Client</h1>
                     <hr/>
                     <table id="tab_history">
@@ -94,14 +94,11 @@
                     },
                    dataType: 'json'
                 }).done(function (data) {
-                    var historique = data.historique;
-                    for (var i=0;i<historique.length ;i++){
-                        var txt = "<tr><td>"+data.historique[i].voyant+"</td><td>"+data.historique[i].dateD+"</td><td>"+data.historique[i].dateF+"</td><td>"+data.historique[i].done+"</td></tr>";
-                        
-                        $('#historique').append(txt);
-                    }
+                    $('#infNom').html(data.demande.nomClient);
+                    $('#infPren').html(data.demande.prenomClient);
+                    
+                    $('#medium').html(data.demande.nomMedium)
                 }).fail(function(){
-                    alert('ca marche pas');
                     $('#message').html('--------------------------------Erreur de chargement profil !');
                 });
             }
