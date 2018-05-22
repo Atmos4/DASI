@@ -87,6 +87,7 @@
                     },
                    dataType: 'json'
                 }).done(function (data) {
+                    $('#script_replace').html($(''));
                     $('#nom_voyant').html(data.medium.nom);
                     $('#bio').html(data.medium.bio);
                     $('#script_replace').html($('#details_voyant').html());

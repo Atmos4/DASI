@@ -175,7 +175,7 @@ public class ActionServlet extends HttpServlet {
             {
                 Action act = new ActionRecupererHistoriqueClient();
                 act.execute(request);
-                PrinterHistorique prt = new PrinterHistorique();
+                Printer prt = new PrinterHistorique();
                 prt.execute(response.getWriter(), request);
                 break;
             }

@@ -59,12 +59,13 @@
                    dataType: 'json'
                 }).done(function (data) {
                     var historique = data.historique;
-                    for (var i=0;i<historique.length && i<10;i++){
+                    for (var i=0;i<historique.length ;i++){
                         var txt = "<tr><td>"+data.historique[i].voyant+"</td><td>"+data.historique[i].dateD+"</td><td>"+data.historique[i].dateF+"</td><td>"+data.historique[i].done+"</td></tr>";
                         
                         $('#historique').append(txt);
                     }
                 }).fail(function(){
+                    alert('ca marche pas');
                     $('#message').html('--------------------------------Erreur de chargement profil !');
                 });
             }

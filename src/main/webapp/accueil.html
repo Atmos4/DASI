@@ -23,17 +23,17 @@
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <p>Texte d'exemple</p>
+                <div id="script_replace"></div>
             </div>
         </div>
         
-         <!--Modal-->
-        <div id="myModal2" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <p>Texte d'exemple</p>
-            </div>
+        <!--Modal-->
+        <div id="details_voyant" class = "hidden">
+            <h2 id="nom_voyant"></h2>
+            <hr/>
+            <p id="bio"></p>
+            <button id="demande_voyance">Demander une voyance</button>
+            <div id="error"></div>
         </div>
 
         <nav id = "sidenav">
@@ -50,7 +50,7 @@
                 <p>Nom : <span id="nom"></span></p>
             </section>
 
-            <section id="mediums" onLoad="recupererMediums()">
+            <section id="mediums">
                 <h1>Liste Médiums</h1>
             </section>
             
@@ -121,12 +121,14 @@
                     },
                    dataType: 'json'
                 }).done(function (data) {
-                    var mediums = data.mediums;
+                   var mediums = data.mediums;
                     for (var i=0;i<mediums.length && i<10;i++){
-                        var txt = "<div class='cell'>";
+                        var txt = "<div class='cell' id=\""+data.mediums[i].id+"\">";
                         txt +="<img src=\"profile-icon.png\" class = \"icon\">";
                         txt +="<span class = \"content\">"+data.mediums[i].nom+"</span>";
-                        txt +="<img src=\"edit.png\" class=\"icon\"></div>";
+                        txt +="<img src=\"edit.png\" class=\"icon showdetails\"></div>";
+                        
+                       
                         
                         $('#mediums').append(txt);
                     }
@@ -152,36 +154,25 @@
                     },
                    dataType: 'json'
                 }).done(function (data) {
+                    $('#script_replace').html($(''));
                     $('#nom_voyant').html(data.medium.nom);
                     $('#bio').html(data.medium.bio);
+                    $('#script_replace').html($('#details_voyant').html());
                 }).fail(function(){
                     $('#error').html('Erreur de chargement profil !');
                 });
                 
                 
             }
-            // Get the modal
-            var modal2 = document.getElementById('myModal2');
-
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target === modal2) {
-                    modal2.style.display = "none";
-                }
-            }
             
             $(document).ready(function(){
-                recupererMediums();
-                $('#liste').on('click','.icon',function(e){
-                    modal2.style.display="block";
+                init();
+                $('#mediums').on('click','.showdetails',function(e){
+                    modal.style.display="block";
                     afficherDetails(e.target.parentNode.id);
                 });
                 
             });
-            
-            
-            $(document).ready(init());
         </script>
         
     </body>

@@ -20,6 +20,8 @@ import models.Voyance;
  * @author Greg
  */
 public class PrinterHistorique extends Printer {
+    
+    @Override
     public void execute(PrintWriter out, HttpServletRequest request ){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<Voyance> hist = (List<Voyance>) request.getAttribute("hist");
