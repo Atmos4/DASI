@@ -21,22 +21,9 @@ import services.Services;
  *
  * @author Greg
  */
-public class ActionConnexionClient extends Action{
+public class ActionRecupererProfilClient extends Action{
     @Override
     public boolean execute(HttpServletRequest request){
-        Services services = new Services();
-        String mail = request.getParameter("mail");
-        Client client = services.connexionClient(mail);
-        if(client!=null)
-        {
-           HttpSession session = request.getSession(true);
-           session.setAttribute("Client", client);
-           request.setAttribute("status", "success");
-           return true;
-        }
-        else{
-            request.setAttribute("status", "failure");
-            return false;
-        }
+        return true;
     }
 }

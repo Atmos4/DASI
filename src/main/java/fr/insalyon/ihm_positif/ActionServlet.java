@@ -10,25 +10,26 @@ import Serializer.PrinterDemarrerVoyance;
 import Serializer.PrinterDetailsMedium;
 import Serializer.PrinterHistorique;
 import Serializer.PrinterMedium;
+import Serializer.PrinterProfilClient;
 import Serializer.PrinterRecupererDemandeVoyance;
+import Serializer.PrinterStatusRequest;
 import Serializer.PrinterVoyancesBarChartMedium;
 import Serializer.PrinterVoyancesPieChart;
 import action.Action;
 import action.ActionAfficherDetailsMedium;
+import action.ActionConnexionClient;
 import action.ActionConnexionEmploye;
 import action.ActionDemarrerVoyance;
+import action.ActionInscription;
 import action.ActionRecupererDataBarChartEmploye;
 import action.ActionRecupererDataBarChartMedium;
 import action.ActionRecupererDataPieChart;
 import action.ActionRecupererDemandeVoyance;
 import action.ActionRecupererHistoriqueClient;
 import action.ActionRecupererMediums;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import action.ActionRecupererProfilClient;
 import dao.JpaUtil;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,9 +38,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.Client;
-import models.Employe;
 
 import services.Services;
 
@@ -67,116 +65,42 @@ public class ActionServlet extends HttpServlet {
         
         Services services = new Services();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        
         switch (todo)
         {
             case "inscription" : 
             {
-                Action act = new ActionConnexionEmploye();
-                if(act.execute(request))
-                {
-                    response.setStatus(200);
-                    try (PrintWriter out = response.getWriter()) {
-                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        
-                        JsonObject jsonEmp = new JsonObject();
-                        jsonEmp.addProperty("status", "success");
-                        
-                        JsonObject container = new JsonObject();
-                        container.add("personne", jsonEmp);
-                        
-                        out.println(gson.toJson(container));
-                   }
-                }
-                else
-                {
-                     //403 : erreur on refuse de traiter la requete
-                     response.setStatus(403);
-                }
+                Action act = new ActionInscription();
+                act.execute(request);
+                Printer prt = new PrinterStatusRequest();
+                prt.execute(response.getWriter(), request);
                 
                 break;
             }
             case  "connexionClient" :
             {
-                String mail = request.getParameter("mail");
-                Client client = services.connexionClient(mail);
-                if(client!=null)
-                {
-                   response.setStatus(200);
-                   HttpSession session = request.getSession(true);
-                   session.setAttribute("Client", client);
-                   try (PrintWriter out = response.getWriter()) {
-                       Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        
-                        JsonObject jsonClient = new JsonObject();
-                        jsonClient.addProperty("id", client.getIdC());
-                        jsonClient.addProperty("motDePasse", client.getMail());
-                        
-                        JsonObject container = new JsonObject();
-                        container.add("personne", jsonClient);
-                        
-                        out.println(gson.toJson(container));
-                   }
-                }
-                else
-                {
-                     //403 : erreur on refuse de traiter la requete
-                     response.setStatus(403);
-                }
+                Action act = new ActionConnexionClient();
+                act.execute(request);
+                Printer prt = new PrinterStatusRequest();
+                prt.execute(response.getWriter(), request);
                 
                 break;
             }
             case "connexionEmploye" :
             {
-                String mail = request.getParameter("mail");
-                Employe employe = services.connexionEmploye(mail);
-                if(employe!=null)
-                {
-                   response.setStatus(200);
-                   HttpSession session = request.getSession(true);
-                   session.setAttribute("employe", employe);
-                   try (PrintWriter out = response.getWriter()) {
-                       Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        
-                        JsonObject jsonEmp = new JsonObject();
-                        jsonEmp.addProperty("mail", mail);
-                        
-                        JsonObject container = new JsonObject();
-                        container.add("personne", jsonEmp);
-                        
-                        out.println(gson.toJson(container));
-                   }
-                }
-                else
-                {
-                     //403 : erreur on refuse de traiter la requete
-                     response.setStatus(403);
-                }
+                Action act = new ActionConnexionEmploye();
+                act.execute(request);
+                Printer prt = new PrinterStatusRequest();
+                prt.execute(response.getWriter(), request);
                 
                 break;
             }
             
             case "recupererProfilClient" :
             {
-                HttpSession session = request.getSession(false);
-                Client clt = (Client) session.getAttribute("Client");
-                String civil, prenom,nom;
-                civil = clt.getCivilite();
-                prenom=clt.getPrenom();
-                nom=clt.getNom();
-                try (PrintWriter out = response.getWriter()) {
-                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-                    JsonObject jsonClient = new JsonObject();
-                    jsonClient.addProperty("civil", civil);
-                    jsonClient.addProperty("nom", nom);
-                    jsonClient.addProperty("prenom", prenom);
-
-                    JsonObject container = new JsonObject();
-                    container.add("profil", jsonClient);
-
-                    out.println(gson.toJson(container));
-                }
+                Action act = new ActionRecupererProfilClient();
+                act.execute(request);
+                Printer prt = new PrinterProfilClient();
+                prt.execute(response.getWriter(), request);
                 break;
             }
             
@@ -246,13 +170,11 @@ public class ActionServlet extends HttpServlet {
                 Printer prt = new PrinterDemarrerVoyance();
                 prt.execute(response.getWriter(), request);
             }
-            
             default :
             {
                 
                 
             }
-            
                 
         }
         

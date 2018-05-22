@@ -49,10 +49,12 @@ public class ActionInscription extends Action{
             {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("mailEmploye", mail);
+                request.setAttribute("status", "success");
                 return true;
             }
             else
             {
+                request.setAttribute("status", "failure");
                 return false;
             }
         } catch (IOException ex) {
