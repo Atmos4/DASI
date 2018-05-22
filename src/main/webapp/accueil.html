@@ -32,7 +32,7 @@
             <h2 id="nom_voyant"></h2>
             <hr/>
             <p id="bio"></p>
-            <button class="demande_voyance">Demander une voyance</button>
+            <button id="demande_voyance">Demander une voyance</button>
         </div>
         
         
@@ -42,7 +42,7 @@
             <span id="idMedium" class ="hidden">0</span>
             <div id="liste_demande">
             </div>
-            <button class = "demarrer_voyance" disabled>Démarrer la voyance</button>
+            <button id= "demarrer_voyance" disabled>Démarrer la voyance</button>
         </div>
         
         <div id="modal_annule" class="hidden">
@@ -179,6 +179,9 @@
                     $('#nom_voyant').html(data.medium.nom);
                     $('#bio').html(data.medium.bio);
                     $('#script_replace').html($('#details_voyant').html());
+                    $('#script_replace').on('click','#demande_voyance',function(){
+                        demarrerVoyance();
+                    });
                 }).fail(function(){
                 });
                 
@@ -194,7 +197,6 @@
             }
             
             function demarrerVoyance(){
-                alert("fonction");
                  $.ajax({
                     url: './ActionServlet',
                     method: 'POST',
@@ -205,12 +207,15 @@
                    dataType: 'json'
                 }).done(function (data) {
                     if (data.isOk){
-                        alert("ok");
                         $('#script_replace').html($('#modal_attente').html());
+                        $('#btnModal').prop("disabled",true);
+                        $('#demande_voyance').prop("disabled",true);
                     }
                     else{
                         $('#script_replace').html($('#modal_annule').html());
                     }
+                    $('#historique').empty();
+                    recupererHistorique();
                     
                 }).fail(function(){
                         alert("erreur");
@@ -223,10 +228,9 @@
                 $('#mediums').on('click','.showdetails',function(e){
                     modal.style.display="block";
                     $('#idMedium').html(e.target.parentNode.id);
+                    
                     afficherDetails(e.target.parentNode.id);
-                    $('.demande_voyance').on('click',function(){
-                        demarrerVoyance();
-                    });
+                    
                 });
                 
                 $('#btnModal').on('click',function(){
@@ -234,7 +238,7 @@
                     $('#liste_demande').on('click','.cell',function(e){
                         selectMedium(e.target.id);
                     });
-                    $('.demarrer_voyance').on('click',function(){
+                    $('#script_replace').on('click','#demarrer_voyance',function(){
                         demarrerVoyance();
                     });
                 });
